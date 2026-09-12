@@ -15,3 +15,7 @@ test-results/
 artifacts/
 cache/
 typechain-types/
+
+# Documentos internos de proceso — quedan locales, nunca se suben al repo público
+docs/OPENCODE_PROMPT.md
+docs/PLAN_BUILDATHON.md
