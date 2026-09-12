@@ -243,7 +243,7 @@ export const ownerHandlers = [
   }),
 
   http.post('/api/return-cases', async ({ request }) => {
-    const body = (await request.json()) as { itemId: string; finderReportId?: string }
+    const body = (await request.json()) as { itemId: string; finderReportId?: string; hasReward?: boolean }
     const item = db.items.get(body.itemId)
     if (!item) return fail('item_not_found', 'No encontramos este perfil.', 404)
     const tag = [...db.tags.values()].find((t) => t.itemId === body.itemId)
@@ -257,6 +257,8 @@ export const ownerHandlers = [
       status: 'proposed',
       handoffCode: null,
       claimToken: null,
+      hasReward: body.hasReward ?? false,
+      caseId: id,
     })
     tag.status = 'RETURN_PENDING'
 

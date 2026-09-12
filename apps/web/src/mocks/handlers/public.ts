@@ -120,7 +120,13 @@ export const publicHandlers = [
     const returnCase = db.returnCases.get(token)
     if (!returnCase) return fail('case_not_found', 'No encontramos ese caso de devolución.', 404)
     const item = db.items.get(returnCase.itemId)
-    return ok({ status: returnCase.status, itemName: item?.name ?? 'Tag', itemPhotoUrl: item?.photoUrl ?? null })
+    return ok({
+      status: returnCase.status,
+      itemName: item?.name ?? 'Tag',
+      itemPhotoUrl: item?.photoUrl ?? null,
+      hasReward: returnCase.hasReward,
+      caseId: returnCase.caseId,
+    })
   }),
 
   http.post('/api/public/return-cases/:token/verify-code', async ({ params, request }) => {

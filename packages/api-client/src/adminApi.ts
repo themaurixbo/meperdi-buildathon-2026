@@ -120,6 +120,14 @@ export function verifyAdminLogin(email: string, code: string): Promise<{ display
   })
 }
 
+/** Simple shared-secret admin login (for internal admin panel) */
+export function adminLogin(password: string): Promise<{ success: boolean; token: string }> {
+  return apiRequest<{ success: boolean; token: string }>('/api/admin/login', {
+    method: 'POST',
+    body: { password },
+  })
+}
+
 /** AD01 */
 export function getAdminDashboard(): Promise<AdminDashboard> {
   return apiRequest<AdminDashboard>('/api/admin/dashboard')

@@ -82,6 +82,10 @@ export interface DbReturnCase {
   status: ReturnCaseStatus
   handoffCode: string | null
   claimToken: string | null
+  /** Whether this case has an on-chain reward (mUSDC). */
+  hasReward: boolean
+  /** The on-chain case ID (bytes32 hash). In mock, same as id. */
+  caseId: string
 }
 
 export interface DbRewardClaim {

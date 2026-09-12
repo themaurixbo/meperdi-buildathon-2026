@@ -7,20 +7,20 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-/// @title RecoveryEscrow — custodia de recompensas opcionales de ME PERDÍ.
-/// @notice ME PERDÍ premia la devolución segura, nunca incentiva a salir a buscar
-/// mascotas u objetos por dinero. La recompensa es siempre opcional y la fija el
-/// dueño al crear el caso. El pago se libera solo cuando el verificador (backend)
-/// confirma que el finder presentó el código de entrega de 6 dígitos correcto.
-/// @notice On-chain solo se guardan montos, estados, fechas y un caseId que es un
-/// hash (bytes32). Nunca nombre, teléfono, ubicación, fotos ni mensajes.
-/// @notice Un caso sin recompensa (rewardAmount == 0) también existe on-chain como
-/// registro y se completa igual, sin mover fondos.
+/// @title RecoveryEscrow — escrow for optional ME PERDÍ rewards.
+/// @notice ME PERDÍ rewards safe returns, it never incentivizes going out to look
+/// for pets or objects for money. The reward is always optional and is set by the
+/// owner when creating the case. Funds are released only when the verifier (backend)
+/// confirms that the finder presented the correct 6-digit handoff code.
+/// @notice Only amounts, states, dates and a caseId that is a hash (bytes32) are
+/// stored on-chain. Never name, phone, location, photos or messages.
+/// @notice A case with no reward (rewardAmount == 0) also exists on-chain as a
+/// record and completes the same way, without moving funds.
 contract RecoveryEscrow is AccessControl, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    /// @notice Rol que solo puede completar un caso ya fondeado. No puede pausar,
-    /// crear casos ni cambiar montos/destinatarios fuera de lo validado al crear.
+    /// @notice Role that can only complete an already funded case. It cannot pause,
+    /// create cases, or change amounts/recipients beyond what was set at creation.
     bytes32 public constant VERIFIER_ROLE = keccak256("VERIFIER_ROLE");
 
     enum CaseStatus {
@@ -64,9 +64,9 @@ contract RecoveryEscrow is AccessControl, Pausable, ReentrancyGuard {
         _grantRole(VERIFIER_ROLE, verifier);
     }
 
-    /// @notice Crea un caso con recompensa opcional. Si rewardAmount > 0, transfiere
-    /// ese monto desde msg.sender al contrato vía transferFrom (el dueño debe haber
-    /// aprobado el gasto antes). Si es 0, el caso se registra sin mover fondos.
+    /// @notice Creates a case with an optional reward. If rewardAmount > 0, that amount
+    /// is transferred from msg.sender to the contract via transferFrom (the owner must
+    /// have approved the spend first). If 0, the case is registered without moving funds.
     function createCase(
         bytes32 caseId,
         address token,
@@ -92,8 +92,8 @@ contract RecoveryEscrow is AccessControl, Pausable, ReentrancyGuard {
         emit CaseCreated(caseId, msg.sender, token, rewardAmount, deadline);
     }
 
-    /// @notice Libera la recompensa al helper. Solo VERIFIER_ROLE. Solo casos FUNDED.
-    /// Un caso COMPLETED no puede volver a completarse (chequeo de status).
+    /// @notice Releases the reward to the helper. VERIFIER_ROLE only. FUNDED cases only.
+    /// A COMPLETED case cannot be completed again (enforced by the status check).
     function completeReturn(
         bytes32 caseId,
         address helper
@@ -112,8 +112,8 @@ contract RecoveryEscrow is AccessControl, Pausable, ReentrancyGuard {
         emit CaseCompleted(caseId, helper, c.rewardAmount);
     }
 
-    /// @notice Devuelve los fondos al dueño si el caso venció sin resolverse.
-    /// Cualquiera puede llamarla.
+    /// @notice Returns the funds to the owner if the case expired unresolved.
+    /// Anyone can call it.
     function refundExpired(bytes32 caseId) external nonReentrant {
         RecoveryCase storage c = cases[caseId];
         if (c.status == CaseStatus.NONE) revert CaseNotFound();
@@ -137,7 +137,7 @@ contract RecoveryEscrow is AccessControl, Pausable, ReentrancyGuard {
         _unpause();
     }
 
-    /// @notice Lectura pública del caso completo, para auditar el fondo sin backend.
+    /// @notice Public read of the full case, so the fund can be audited without the backend.
     function getCase(bytes32 caseId) external view returns (RecoveryCase memory) {
         return cases[caseId];
     }

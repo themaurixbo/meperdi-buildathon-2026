@@ -19,3 +19,6 @@ typechain-types/
 # Documentos internos de proceso — quedan locales, nunca se suben al repo público
 docs/OPENCODE_PROMPT.md
 docs/PLAN_BUILDATHON.md
+docs/OPENCODE_ADMIN_PROMPT.md
+# Contiene IP del servidor, usuario y ruta de la clave SSH — nunca al repo público
+docs/OPENCODE_DEPLOY_PROMPT.md

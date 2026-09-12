@@ -6,6 +6,9 @@ import { RequestIdMiddleware } from './common/request-id.middleware'
 import { HealthModule } from './health/health.module'
 import { PublicModule } from './public/public.module'
 import { SetupModule } from './setup/setup.module'
+import { BlockchainModule } from './blockchain/blockchain.module'
+import { AuthModule } from './auth/auth.module'
+import { AdminModule } from './admin/admin.module'
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { SetupModule } from './setup/setup.module'
     HealthModule,
     PublicModule,
     SetupModule,
+    BlockchainModule,
+    AuthModule,
+    AdminModule,
   ],
 })
 export class AppModule implements NestModule {

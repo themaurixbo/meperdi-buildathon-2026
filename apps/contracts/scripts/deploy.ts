@@ -4,8 +4,9 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 /**
- * Despliega MockUSDC + RecoveryEscrow en HSK testnet, otorga VERIFIER_ROLE y
- * acuña mUSDC de prueba al dueño de demo. Imprime las direcciones para el backend.
+ * Deploys MockUSDC + RecoveryEscrow on the configured network (HSK testnet or Avalanche Fuji),
+ * grants VERIFIER_ROLE and mints test mUSDC to the demo owner.
+ * Prints the addresses needed by the backend.
  */
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -40,13 +41,20 @@ async function main() {
   console.log(`mUSDC de prueba acuñados: ${mintAmount.toString()} (base units) -> ${demoOwnerAddress}`);
   console.log("tx mint:", mintTx.hash);
 
+  // Determine network-specific env variable names
+  const networkName = hre.network.name;
+  const isAvalanche = networkName === "avalancheFuji";
+  const escrowVar = isAvalanche ? "AVALANCHE_RECOVERY_ESCROW_ADDRESS" : "RECOVERY_ESCROW_ADDRESS";
+  const usdcVar = isAvalanche ? "AVALANCHE_MOCK_USDC_ADDRESS" : "MOCK_USDC_ADDRESS";
+  const verifyCmd = isAvalanche ? "avalancheFuji" : "hskTestnet";
+
   console.log("\n--- Para apps/api/.env ---");
-  console.log(`RECOVERY_ESCROW_ADDRESS=${escrowAddress}`);
-  console.log(`MOCK_USDC_ADDRESS=${mockUSDCAddress}`);
+  console.log(`${escrowVar}=${escrowAddress}`);
+  console.log(`${usdcVar}=${mockUSDCAddress}`);
   console.log("\nVerificar luego con:");
-  console.log(`npx hardhat verify --network hskTestnet ${mockUSDCAddress}`);
+  console.log(`npx hardhat verify --network ${verifyCmd} ${mockUSDCAddress}`);
   console.log(
-    `npx hardhat verify --network hskTestnet ${escrowAddress} ${deployer.address} ${verifierAddress}`,
+    `npx hardhat verify --network ${verifyCmd} ${escrowAddress} ${deployer.address} ${verifierAddress}`,
   );
 }
 

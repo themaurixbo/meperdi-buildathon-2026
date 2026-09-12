@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as LoadingRouteImport } from './routes/loading'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as PermissionsRouteImport } from './routes/permissions'
 import { Route as ScanRouteImport } from './routes/scan'
@@ -78,6 +79,11 @@ const AppRoute = AppRouteImport.update({
 const HelpRoute = HelpRouteImport.update({
   id: '/help',
   path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoadingRoute = LoadingRouteImport.update({
+  id: '/loading',
+  path: '/loading',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PartnerRoute = PartnerRouteImport.update({
@@ -316,6 +322,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/help': typeof HelpRoute
+  '/loading': typeof LoadingRoute
   '/partner': typeof PartnerRouteWithChildren
   '/permissions': typeof PermissionsRoute
   '/scan': typeof ScanRoute
@@ -366,6 +373,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/help': typeof HelpRoute
+  '/loading': typeof LoadingRoute
   '/permissions': typeof PermissionsRoute
   '/scan': typeof ScanRoute
   '/start': typeof StartRoute
@@ -418,6 +426,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/help': typeof HelpRoute
+  '/loading': typeof LoadingRoute
   '/partner': typeof PartnerRouteWithChildren
   '/permissions': typeof PermissionsRoute
   '/scan': typeof ScanRoute
@@ -472,6 +481,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/app'
     | '/help'
+    | '/loading'
     | '/partner'
     | '/permissions'
     | '/scan'
@@ -522,6 +532,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/help'
+    | '/loading'
     | '/permissions'
     | '/scan'
     | '/start'
@@ -573,6 +584,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/app'
     | '/help'
+    | '/loading'
     | '/partner'
     | '/permissions'
     | '/scan'
@@ -626,6 +638,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
   HelpRoute: typeof HelpRoute
+  LoadingRoute: typeof LoadingRoute
   PartnerRoute: typeof PartnerRouteWithChildren
   PermissionsRoute: typeof PermissionsRoute
   ScanRoute: typeof ScanRoute
@@ -674,6 +687,13 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loading': {
+      id: '/loading'
+      path: '/loading'
+      fullPath: '/loading'
+      preLoaderRoute: typeof LoadingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/partner': {
@@ -1087,6 +1107,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   HelpRoute: HelpRoute,
+  LoadingRoute: LoadingRoute,
   PartnerRoute: PartnerRouteWithChildren,
   PermissionsRoute: PermissionsRoute,
   ScanRoute: ScanRoute,

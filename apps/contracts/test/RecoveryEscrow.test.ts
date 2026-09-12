@@ -17,7 +17,7 @@ async function deployFixture() {
   const escrow = await Escrow.deploy(admin.address, verifier.address);
   await escrow.waitForDeployment();
 
-  // Fondear al dueño de demo con mUSDC de prueba
+  // Fund the demo owner with test mUSDC
   await mockUSDC.mint(owner.address, toUnits("1000"));
 
   return { admin, verifier, owner, helper, other, mockUSDC, escrow };
@@ -47,7 +47,7 @@ describe("RecoveryEscrow", () => {
       .to.emit(escrow, "CaseCreated")
       .withArgs(caseId, owner.address, tokenAddr, amount, await deadlineIn(7));
 
-    // Balance movido: toleramos ±2s de deadline por el minado entre llamadas
+    // Balance moved: allow ±2s of deadline drift from mining between calls
     expect(await mockUSDC.balanceOf(escrowAddr)).to.equal(amount);
     const stored = await escrow.getCase(caseId);
     expect(stored.owner).to.equal(owner.address);
@@ -67,7 +67,7 @@ describe("RecoveryEscrow", () => {
     expect(await mockUSDC.balanceOf(escrowAddr)).to.equal(0n);
     expect(await mockUSDC.balanceOf(owner.address)).to.equal(before);
     const stored = await escrow.getCase(caseId);
-    expect(stored.status).to.equal(1n); // FUNDED igual, sin fondos
+    expect(stored.status).to.equal(1n); // FUNDED as well, no funds moved
     expect(stored.rewardAmount).to.equal(0n);
   });
 

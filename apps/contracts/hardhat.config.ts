@@ -25,12 +25,18 @@ const config: HardhatUserConfig = {
       chainId: 177,
       accounts,
     },
+    avalancheFuji: {
+      url: "https://api.avax-test.network/ext/bc/C/rpc",
+      chainId: 43113,
+      accounts,
+    },
   },
   etherscan: {
     // Blockscout expone API compatible con Etherscan. URL exacta confirmada
     // contra https://testnet-explorer.hsk.xyz antes de configurar.
     apiKey: {
       hskTestnet: "empty",
+      avalancheFuji: process.env.SNOWTRACE_API_KEY ?? "empty",
     },
     customChains: [
       {
@@ -39,6 +45,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://testnet-explorer.hsk.xyz/api",
           browserURL: "https://testnet-explorer.hsk.xyz",
+        },
+      },
+      {
+        network: "avalancheFuji",
+        chainId: 43113,
+        urls: {
+          apiURL: "https://api-testnet.snowtrace.io/api",
+          browserURL: "https://testnet.snowtrace.io",
         },
       },
     ],

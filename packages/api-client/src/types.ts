@@ -185,6 +185,10 @@ export interface PublicReturnCaseView {
   status: ReturnCaseStatus
   itemName: string
   itemPhotoUrl: string | null
+  /** Whether this case has an on-chain reward that can be claimed after delivery confirmation. */
+  hasReward: boolean
+  /** The case ID (hash) used for on-chain operations. */
+  caseId: string
 }
 
 export interface OwnerReturnCaseView {
