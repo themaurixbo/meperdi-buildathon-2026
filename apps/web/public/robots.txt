@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /t/
+Disallow: /return/
+Disallow: /reward/
+Disallow: /activate/
+Disallow: /app/
+Disallow: /auth/

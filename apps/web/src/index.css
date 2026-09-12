@@ -1,0 +1,76 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/plus-jakarta-sans';
+
+/**
+ * Tokens de marca — sección 3 de la especificación (packages/design-tokens es la fuente
+ * canónica en TS; estos valores deben mantenerse en sincronía manualmente porque
+ * Tailwind v4 lee su tema desde CSS, no desde JS).
+ */
+@theme {
+  --color-night: #0b1026;
+  --color-violet: #7c3aed;
+  --color-aqua: #20e3c2;
+  --color-coral: #ff4d8d;
+  --color-lime: #d9ff43;
+  --color-cream: #fff8ed;
+  --color-ink: #111827;
+  --color-muted: #667085;
+  --color-danger: #e5484d;
+
+  --font-sans: 'Plus Jakarta Sans Variable', Inter, system-ui, sans-serif;
+
+  --radius-card: 24px;
+  --radius-field: 18px;
+  --radius-button: 18px;
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 12px 24px -12px rgba(11, 16, 38, 0.18);
+  --shadow-violet-glow: 0 10px 30px -10px rgba(124, 58, 237, 0.45);
+  --shadow-aqua-glow: 0 10px 30px -10px rgba(32, 227, 194, 0.4);
+  --shadow-coral-glow: 0 10px 30px -10px rgba(255, 77, 141, 0.4);
+
+  --breakpoint-xs: 360px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+    font-feature-settings: 'ss01';
+    margin: 0;
+  }
+
+  /* Foco visible de 3px — sección 15, requisito de accesibilidad. */
+  :focus-visible {
+    outline: 3px solid var(--color-violet);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-violet) 30%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/** Utilidad para el gradiente de campaña — solo hero, onboarding y celebración (sección 3.2). */
+.campaign-gradient {
+  background: linear-gradient(135deg, #7c3aed 0%, #ff4d8d 55%, #20e3c2 100%);
+}

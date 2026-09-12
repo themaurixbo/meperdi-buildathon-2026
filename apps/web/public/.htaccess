@@ -1,0 +1,46 @@
+# ME PERDÍ — configuración para hosting compartido cPanel (Apache)
+
+# 1. Forzar HTTPS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# 2. Fallback de SPA: cualquier ruta que no sea un archivo o carpeta real
+#    (p. ej. /t/activa-luna) se resuelve con index.html y el router del lado del cliente.
+#    Sin RewriteBase a propósito: así esta misma regla funciona igual si el sitio
+#    vive en la raíz del dominio o en un subpath (ej. /demo/) — mod_rewrite resuelve
+#    "index.html" relativo a la carpeta donde está este archivo.
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# 3. El service worker de MSW no debe quedar cacheado por el navegador/proxy:
+#    cada visita necesita la versión más reciente de los mocks.
+<IfModule mod_headers.c>
+  <FilesMatch "^(mockServiceWorker\.js|sw\.js|registerSW\.js|manifest\.webmanifest)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+
+  # Los archivos con hash en el nombre (assets/*) son inmutables: cache largo.
+  <FilesMatch "\.(js|css|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# 4. Compresión
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>

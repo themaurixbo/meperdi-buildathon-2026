@@ -1,0 +1,23 @@
+{
+  "name": "meperdi-buildathon-2026",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w apps/web",
+    "dev:api": "npm run start:dev -w apps/api",
+    "build": "npm run build -w packages/domain -w packages/validation && npm run build --workspaces --if-present",
+    "preview": "npm run preview -w apps/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e -w apps/web"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.2"
+  }
+}

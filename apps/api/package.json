@@ -1,0 +1,44 @@
+{
+  "name": "@meperdi/api",
+  "private": true,
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.20.0"
+  },
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/database/data-source.ts",
+    "seed": "ts-node -r tsconfig-paths/register src/database/seed.ts"
+  },
+  "dependencies": {
+    "@meperdi/domain": "*",
+    "@meperdi/validation": "*",
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/typeorm": "^11.0.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "typeorm": "^0.3.27"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.10",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.15.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~6.0.2"
+  }
+}
