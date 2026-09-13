@@ -14,6 +14,7 @@ import { TextField } from '../components/ui/TextField'
 import { Button } from '../components/ui/Button'
 import { PhotoFrame } from '../components/ui/PhotoFrame'
 import { CardSkeleton, ErrorState } from '../components/ui/StateViews'
+import { ProcessLoader } from '../components/ui/ProcessLoader'
 import { useNoIndex } from '../lib/useNoIndex'
 
 export const Route = createFileRoute('/return/$caseToken')({
@@ -51,9 +52,6 @@ function ReturnCaseScreen() {
         helperAddress: walletAddress,
       }),
     onSuccess: (result) => setClaimResult(result),
-    onError: (error: Error) => {
-      alert(error.message)
-    },
   })
 
   if (query.isPending) {
@@ -170,6 +168,34 @@ function ReturnCaseScreen() {
             </Card>
           )}
         </>
+      )}
+
+      {verifyMutation.isPending && (
+        <ProcessLoader
+          status="loading"
+          title="Confirmando la entrega"
+          description="Estamos verificando el código de entrega que te dio el propietario."
+        />
+      )}
+
+      {claimMutation.isPending && (
+        <ProcessLoader
+          status="loading"
+          title="Confirmando la devolución"
+          description="Confirmando la transacción y liberando la recompensa desde el contrato de custodia."
+          networkBadge="HSK Chain"
+        />
+      )}
+
+      {claimMutation.isError && (
+        <ProcessLoader
+          status="error"
+          title="No se pudo completar la transacción"
+          description="La operación no se completó."
+          errorMessage={claimMutation.error.message}
+          networkBadge="HSK Chain"
+          onDismiss={() => claimMutation.reset()}
+        />
       )}
     </Screen>
   )
