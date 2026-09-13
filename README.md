@@ -1,10 +1,10 @@
-# ME PERDÍ On-Chain (Buildathon Ethereum Bolivia 2026)
+# I'M LOST On-Chain (Buildathon Ethereum Bolivia 2026)
 
 ## What is ME PERDÍ?
 
-ME PERDÍ connects a physical QR tag to a secure digital profile so a lost pet or valuable object can find its way back to its owner. It works for anything important: phones, backpacks, laptops, bicycles, cameras, musical instruments, luggage, keys, wallets, tools, documents — anything someone wants to protect with the possibility that a stranger can return it without friction.
+I'M LOST (ME PERDÍ) connects a physical QR tag to a secure digital profile so a lost pet or valuable object can find its way back to its owner. It works for anything important: phones, backpacks, laptops, bicycles, cameras, musical instruments, luggage, keys, wallets, tools, documents — anything someone wants to protect with the possibility that a stranger can return it without friction.
 
-**Core principle:** ME PERDÍ rewards safe returns, never incentivizes going out to look for pets or objects for money.
+**Core principle:** I'M LOST rewards safe returns, never incentivizes going out to look for pets or objects for money.
 
 ## The Principle: Reward the Return, Not the Search
 
