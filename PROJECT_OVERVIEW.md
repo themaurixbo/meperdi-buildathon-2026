@@ -1,4 +1,4 @@
-# ME PERDÍ — Documentación Técnica Completa
+# I'M LOST — TEC. Documentation
 
 ## Visión General
 
